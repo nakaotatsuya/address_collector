@@ -17,7 +17,7 @@ PythonとPipのインストールは[こちら](https://wepicks.net/weplog-pip_w
 
 以下のコマンドを1行ずつ入力.
 ```
-git clone https://github.com/nakaotatsuya/address_collector.git
+git clone -b master https://github.com/nakaotatsuya/address_collector.git
 cd address_collector
 pip install -r requirements.txt
 ```
