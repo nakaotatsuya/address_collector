@@ -1,12 +1,17 @@
 import time
 from selenium import webdriver
 import chromedriver_binary
-
+from selenium.webdriver.common.by import By
 
 from pathlib import Path
 import os
 
-def download_data(pref_id, city_id, dir_name):
+import argparse
+
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+def download_data(pref_id, city_id, dir_name, year="2012"):
     download_dir = str(dir_name.resolve())
     print(download_dir)
 
@@ -24,7 +29,8 @@ def download_data(pref_id, city_id, dir_name):
     options.add_argument("--headless")
 
     driver = webdriver.Chrome(options=options)
-    year = "2012"
+
+    wait = WebDriverWait(driver=driver, timeout=30)
 
     #method 1
     # driver.get("https://jpon.xyz/" + year + "/" +  pref_id + "/" + city_id + "/index.html")
@@ -49,23 +55,46 @@ def download_data(pref_id, city_id, dir_name):
     i=1
     while True:
         driver.get("https://jpon.xyz/" + year + "/" +  pref_id + "/" + city_id + "/" + str(i) + "/index.html")
-        elem_2 = driver.find_element_by_xpath('/html/body/div[5]/div[2]/a[2]')
+
+        #wait
+        wait.until(EC.presence_of_all_elements_located)
+
+        elem_2 = driver.find_element(By.XPATH, '/html/body/div[5]/div[2]/a[2]')
+        # elem_2 = driver.find_element_by_xpath('/html/body/div[5]/div[2]/a[2]')
         elem_2.click()
+
+        wait.until(EC.presence_of_all_elements_located)
         try:
             elem_2.get_attribute("href")
+            print("Downloading... ")
         except:
-            print("error occured")
+            # print("error occured")
+            print("Done.")
+            driver.close()
+            driver.quit()
             break
-        i += 1
+        i += 1     
 
 if __name__ == "__main__":
     dir_name = "data"
     dir_name =Path(dir_name)
 
-    pref_id = "10"
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-p", "--pref_id", type=int, help="prefecture ID")
+    parser.add_argument("-c", "--city_id", type=int, default=-1 ,help="city ID")
+    parser.add_argument("-y", "--year", type=int, default=2012, help="year")
+
+    args = parser.parse_args()
+    
+    if args.city_id == -1:
+        # not recommend
+        for i in range(100):
+            city_id = i+1
+            download_data(pref_id=str(args.pref_id), city_id=str(city_id), dir_name=dir_name, year=str(args.year))
+
+    else:
+        download_data(pref_id=str(args.pref_id), city_id=str(args.city_id), dir_name=dir_name, year=str(args.year))
+
+    #pref_id = "10"
     #city_id = "11"
     #download_data(pref_id=pref_id, city_id=city_id, dir_name=dir_name)
-
-    for i in range(20):
-        city_id = str(i+31)
-        download_data(pref_id=pref_id, city_id=city_id, dir_name=dir_name)
