@@ -2,3 +2,4 @@ pandas
 numpy
 selenium==4.8.0
 chromedriver-binary==109.0.5414.74.0
+jusho

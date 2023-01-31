@@ -1,10 +1,10 @@
 import pandas as pd
-import numpy as np
+# import numpy as np
 import os
 from pathlib import Path
 import argparse
 
-from jusho import Jusho, Address, City, Prefecture
+from jusho import Jusho
 
 def combine_data(pref_id, city_id):
     data_loc = "data"
