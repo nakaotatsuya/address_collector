@@ -32,14 +32,14 @@ Usage
 
 (Recommended)
 ```
-python test_selenium.py --pref_id 11 --city_id 1 --year 2012
+python test_selenium.py --pref_id 11 --city_id 1 --year 2020 --userID "<userID>" --password "<password>"
 ```
 
 `city_id` に何も入力しなければ,`pred_id` で指定した都道府県の全市町村に関してダウンロードを行う(が,非常に時間がかかるため推奨されない.)
 以下のコマンドでは,奈良県の全ての市町村の住所のcsvファイルをダウンロードする.
 (Not Recommended)
 ```
-python test_selenium.py --pref_id 11 --year 2012
+python test_selenium.py --pref_id 11 --year 2020 --userID "<userID>" --password "<password>"
 ```
 
 `year` は現在のところ2020年など最新が見れないため,2012年をデフォルトとしている.

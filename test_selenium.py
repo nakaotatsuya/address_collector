@@ -11,7 +11,7 @@ import argparse
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-def download_data(pref_id, city_id, dir_name, year="2012"):
+def download_data(pref_id, city_id, dir_name, year, userID, password):
     download_dir = str(dir_name.resolve())
     print(download_dir)
 
@@ -56,16 +56,16 @@ def download_data(pref_id, city_id, dir_name, year="2012"):
     driver.get("https://jpon.xyz/m/login.php")
     wait.until(EC.presence_of_all_elements_located)
 
-    userID = driver.find_element(By.NAME, "id")
-    password = driver.find_element(By.NAME, "password")
+    ele_userID = driver.find_element(By.NAME, "id")
+    ele_password = driver.find_element(By.NAME, "password")
 
-    userID.clear()
-    password.clear()
+    ele_userID.clear()
+    ele_password.clear()
 
-    userID.send_keys("7785494")
-    password.send_keys("jyuponrote")
+    ele_userID.send_keys(userID)
+    ele_password.send_keys(password)
 
-    userID.submit()
+    ele_userID.submit()
 
     while True:
         driver.get("https://jpon.xyz/" + year + "/" +  pref_id + "/" + city_id + "/" + str(i) + "/index.html")
@@ -97,6 +97,8 @@ if __name__ == "__main__":
     parser.add_argument("-p", "--pref_id", type=int, help="prefecture ID")
     parser.add_argument("-c", "--city_id", type=int, default=-1 ,help="city ID")
     parser.add_argument("-y", "--year", type=int, default=2012, help="year")
+    parser.add_argument("--userID", type=str, help="login userID")
+    parser.add_argument("--password", type=str, help="login password")
 
     args = parser.parse_args()
     
@@ -104,10 +106,12 @@ if __name__ == "__main__":
         # not recommend
         for i in range(100):
             city_id = i+1
-            download_data(pref_id=str(args.pref_id), city_id=str(city_id), dir_name=dir_name, year=str(args.year))
+            download_data(pref_id=str(args.pref_id), city_id=str(city_id), dir_name=dir_name, year=str(args.year),
+            userID=args.userID, password=args.password)
 
     else:
-        download_data(pref_id=str(args.pref_id), city_id=str(args.city_id), dir_name=dir_name, year=str(args.year))
+        download_data(pref_id=str(args.pref_id), city_id=str(args.city_id), dir_name=dir_name, year=str(args.year),
+        userID=args.userID, password=args.password)
 
     #pref_id = "10"
     #city_id = "11"
