@@ -53,18 +53,32 @@ def download_data(pref_id, city_id, dir_name, year="2012"):
 
     #method 2
     i=1
+    driver.get("https://jpon.xyz/m/login.php")
+    wait.until(EC.presence_of_all_elements_located)
+
+    userID = driver.find_element(By.NAME, "id")
+    password = driver.find_element(By.NAME, "password")
+
+    userID.clear()
+    password.clear()
+
+    userID.send_keys("7785494")
+    password.send_keys("jyuponrote")
+
+    userID.submit()
+
     while True:
         driver.get("https://jpon.xyz/" + year + "/" +  pref_id + "/" + city_id + "/" + str(i) + "/index.html")
 
         #wait
         wait.until(EC.presence_of_all_elements_located)
 
-        elem_2 = driver.find_element(By.XPATH, '/html/body/div[5]/div[2]/a[2]')
-        # elem_2 = driver.find_element_by_xpath('/html/body/div[5]/div[2]/a[2]')
-        elem_2.click()
-
-        wait.until(EC.presence_of_all_elements_located)
         try:
+            elem_2 = driver.find_element(By.XPATH, '/html/body/div[4]/div[2]/a[2]')
+            # /html/body/div[4]/div[2]/a[2]
+            # elem_2 = driver.find_element_by_xpath('/html/body/div[5]/div[2]/a[2]')
+            wait.until(EC.presence_of_all_elements_located)
+            elem_2.click()
             elem_2.get_attribute("href")
             print("Downloading... ")
         except:
