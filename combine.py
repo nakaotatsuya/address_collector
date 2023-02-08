@@ -27,9 +27,10 @@ def combine_data(pref_id, city_id):
         df = pd.read_csv(file_name, header=None)
         df = df.rename(columns = labels_dict)
         #print(len(df))
+        #print(df)
 
         #zip code
-        postman = Jusho()
+        postman = Jusho(database_path=Path("./database.db"))
         prefecture = postman.search_prefectures(df["prefecture"].iloc[0])[0]
         city = postman.search_cities(df["city_ward"].iloc[0], prefecture=prefecture)[0]
         #print(city)
@@ -62,7 +63,6 @@ if __name__=="__main__":
     parser.add_argument("-c", "--city_id", type=int, default=-1 ,help="city ID")
 
     args = parser.parse_args()
-
     if args.city_id == -1:
         i = 1
         while True:
