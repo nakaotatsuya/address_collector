@@ -11,6 +11,8 @@ import argparse
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+from webdriver_manager.chrome import ChromeDriverManager
+
 def download_data(pref_id, city_id, dir_name, year, userID, password):
     download_dir = str(dir_name.resolve())
     print(download_dir)
@@ -28,7 +30,7 @@ def download_data(pref_id, city_id, dir_name, year, userID, password):
     })
     options.add_argument("--headless")
 
-    driver = webdriver.Chrome(options=options)
+    driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
 
     wait = WebDriverWait(driver=driver, timeout=30)
 
