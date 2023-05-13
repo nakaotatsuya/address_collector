@@ -28,12 +28,21 @@ def download_data(pref_id, city_id, dir_name, year, userID, password):
     options = webdriver.ChromeOptions()
     options.add_experimental_option("prefs", {
         "download.default_directory": download_dir,
+        'download.prompt_for_download': False,
         #"plugins.always_open_pdf_externally": True
     })
     options.add_argument("--headless")
 
     # driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
     driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
+
+    driver.command_executor._commands["send_command"] = (
+    'POST',
+    '/session/$sessionId/chromium/send_command')
+
+    driver.execute('send_command', params={
+        'cmd': 'Page.setDownloadBehavior',
+        'params': {'behavior': 'allow', 'downloadPath': download_dir}})
 
     wait = WebDriverWait(driver=driver, timeout=30)
 
