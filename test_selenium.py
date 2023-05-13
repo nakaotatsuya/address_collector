@@ -12,6 +12,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service as ChromeService
+
 
 def download_data(pref_id, city_id, dir_name, year, userID, password):
     download_dir = str(dir_name.resolve())
@@ -30,7 +32,8 @@ def download_data(pref_id, city_id, dir_name, year, userID, password):
     })
     options.add_argument("--headless")
 
-    driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+    # driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+    driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
 
     wait = WebDriverWait(driver=driver, timeout=30)
 
@@ -76,7 +79,7 @@ def download_data(pref_id, city_id, dir_name, year, userID, password):
         wait.until(EC.presence_of_all_elements_located)
 
         try:
-            elem_2 = driver.find_element(By.XPATH, '/html/body/div[4]/div[2]/a[2]')
+            elem_2 = driver.find_element(By.XPATH, '/html/body/div[5]/div[2]/a[2]')
             # /html/body/div[4]/div[2]/a[2]
             # elem_2 = driver.find_element_by_xpath('/html/body/div[5]/div[2]/a[2]')
             wait.until(EC.presence_of_all_elements_located)
