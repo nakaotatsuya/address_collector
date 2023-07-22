@@ -13,6 +13,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service as ChromeService
+import requests
 
 
 def download_data(pref_id, city_id, dir_name, year, userID, password):
@@ -34,7 +35,8 @@ def download_data(pref_id, city_id, dir_name, year, userID, password):
     options.add_argument("--headless")
 
     # driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
-    driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
+    res = requests.get('https://chromedriver.storage.googleapis.com/LATEST_RELEASE')
+    driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager(res.text).install()), options=options)
 
     driver.command_executor._commands["send_command"] = (
     'POST',
